@@ -1,0 +1,58 @@
+const apiUrl = 'https://script.google.com/macros/s/AKfycbxRc3XjvMbcxB2dltzEsHKHDQdauMqDR-Huk8Led4Kg-BDs5ihyc2NujDPbU87XSSS4/exec';
+
+async function loadData() {
+  const res = await fetch(apiUrl);
+  const data = await res.json();
+  const tbody = document.getElementById("data-body");
+  tbody.innerHTML = '';
+  window._data = data;
+
+  data.forEach((item, i) => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${item.name}</td>
+        <td>${item.email}</td>
+        <td>
+          <button onclick="editData(${i})">Edit</button>
+          <button onclick="deleteData('${item.id}')">Delete</button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+async function handleSubmit(event) {
+  event.preventDefault();
+  const id = document.getElementById('id').value;
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+
+  const payload = { id, name, email };
+  const method = id ? 'PUT' : 'POST';
+
+  await fetch(apiUrl, {
+    method: method,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  document.getElementById('form').reset();
+  loadData();
+}
+
+function editData(index) {
+  const data = window._data[index];
+  document.getElementById('id').value = data.id;
+  document.getElementById('name').value = data.name;
+  document.getElementById('email').value = data.email;
+}
+
+async function deleteData(id) {
+  await fetch(`${apiUrl}?id=${id}`, {
+    method: 'DELETE'
+  });
+  loadData();
+}
+
+document.getElementById('form').addEventListener('submit', handleSubmit);
+window.onload = loadData;

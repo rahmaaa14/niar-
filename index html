@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CRUD Google Apps Script</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h2>CRUD Web App</h2>
+
+  <form id="form">
+    <input type="hidden" id="id">
+    <input type="text" id="name" placeholder="Name" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <button type="submit">Save</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr><th>Name</th><th>Email</th><th>Actions</th></tr>
+    </thead>
+    <tbody id="data-body"></tbody>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>
